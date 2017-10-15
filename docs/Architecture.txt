@@ -1,0 +1,44 @@
+
+Key concepts:
+    DottedName / Identifier
+    Assembly
+    Module
+    Type
+    Method
+    Field
+    Property
+    Instruction
+
+These are all actual backing data, separate from what gets printed in the IL file. Throughout here they are reffered to as "data".
+Each of these has a concept of being declared vs defined. External data can only ever be declared (obviously). Locally defined data can
+also be declared before being defined. This helps the case when the value is used before being defined, which is valid for IL.
+
+Data also appears in the IL file in multiple formats, depending on the context. To solve this problem, there are generators. Each generator represents a format that the data
+should be output as. When an entire file is generated, first the generator for the whole file is used. This in turn creates more generators, ultimately resulting in a tree of generators.
+Each piece of data has no concept of how it is generated, creating essentially a View - Model separation. This also forces all relevant information for data to be nicely exposed.
+
+The developer ideally will never see or use generators, they will be self contained. Instead they will manipulate the data itself, and just call generate on the top level. The generators
+map fairly closely to the specified syntax in the ECMA-335 document. This is also good because the developer should not have to read that to know how to use this.
+
+The memory of data is always owned by another piece of data. The main exception to this is the ILFile data, which is just a top-level collection of other data.
+The ILFile also has the generate call, so the developer needs an instance to output anything, which forces all memory to be owned correctly. DottedName / Identifier will be self contained and
+easily copyable, so it isn't relevant here (it owns itself).
+The hierarchy is as follows:
+    - ILFile owns the current assembly and any external assemblies
+    - Assemblies own any assembly level exported Types, and modules (if the assembly isn't external). Any other exported thing will be owned here also (when supported in the future)
+    - Modules own Types, Methods, and Fields (whether exported or not)
+    - Types own Methods, Fields, Properties
+    - Methods own Instructions
+    - Fields, Properties, Instructions don't own anything
+
+Notice that Properties don't own their methods. This is to give more flexibility to the developer to choose what methods to use. As a general rule, maximum generality and flexibility
+is preferred instead of super easy access to common scenarios. Instead for common scenarios, there should be utilities that automatically generate them. For example, there will
+probably be a property factory that automatically generates the correct methods in the class for the developer. Also any flags or setup should default to the common case, so leaving it alone
+will most likely be the right thing to do.
+
+Errors will be thrown early, when creating data instead of when generating. This means if the generate call is reached, there is a relatively good guarantee that it will succeed.
+However, there is only a limited amount of error checking that is done, most of it will be invalid combinations of flags and other easily detectible cases.
+Specifically, no algorithm will be run to guarantee type correctness of a sequence of instructions (ILAsm does this for you anyways). Also any exported types / methods / etc are
+assumed to be exactly what the developer says. It is out of scope to find the corresponding assembly, open up its metadata, and extract the type info.
+
+

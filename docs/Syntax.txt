@@ -1,0 +1,723 @@
+SubTerminals:
+    ID - simple
+    QSTRING - requires escape logic
+    SQSTRING - requires escape logic
+    Int32 - multiple input formats
+    Int64 - multiple input formats
+    HexByte - easy
+    RealNumber - multiple input formats
+
+Nodes:
+    Basics:
+        Identifier { - reducible to raw data, simply different methods to create it
+            ID |
+            QSTRING
+        }
+
+        DottedName {
+            List<Identifier> ids
+        }
+
+    Labels:
+        LabelOrOffset : MethodBodyItem {
+            Identifier label
+        }
+
+        Labels {
+            List<LabelOrOffset> labels
+        }
+
+        CodeLabel {
+            Identifier label
+        }
+
+        DataLabel {
+            Identifier label
+        }
+
+    Numerics:
+        Bytes { - reducible to raw data
+            List<HexByte>
+        }
+
+        Float32 { - reducible to raw data, different ways to create it
+            RealNumber |
+            Int32
+        }
+
+        Float64 { - reducible to raw data, different ways to create it
+            RealNumber |
+            Int64
+        }
+
+    Files:
+        ExternSourceDecl : Decl, ClassMemeber, MethodBodyItem, PropMember, EventMember {
+            Int32 line,
+            Int32? column,
+            SQSTRING? filename
+        }
+
+        FileName {
+            DottedName name
+        }
+
+    Custom Declaration:
+        "Custom" : Decl, AsmDecl, AsmRefDecl, ManResDecl, ExternClassDecl, ClassMember, MethodBodyItem, PropMember, EventMember {
+            CustomDecl custom
+        }
+
+    Security Declaration:
+        base SecurityDecl : Decl, AsmDecl, ClassMember, MethodBodyItem
+
+    Top level:
+        ILFile {
+            List?<Decl> declarations
+        }
+
+        base Decl
+
+        "CorFlags" : Decl {
+            Int32 flag
+        }
+
+        "FileReference" : Decl {
+            FileName name,
+            Bytes hash,
+            flag IsNoMetadata,
+            flag IsEntryPoint
+        }
+
+        "SubsystemType" : Decl {
+            Int32 value
+        }
+
+        "TypeForwarder" : Decl {
+            DottedName className,
+            DottedName assemblyName
+        }
+
+        "VTableFixUp" : Decl {
+            - used to call managed code from unmanaged code
+            - skipped because unnecessary for now
+        }
+
+    Assembly Declaration:
+        "DeclareAssemblyManifest" : Decl {
+            DottedName name,
+            List?<AsmDecl> declarations
+        }
+
+        base AsmDecl
+
+        "HashAlgorithm" : AsmDecl {
+            Int32 algorithm
+        }
+
+        "Culture" : AsmDecl, AsmRefDecl {
+            QSTRING culture
+        }
+
+        "PublicKey" : AsmDecl, AsmRefDecl {
+            Bytes key
+        }
+
+        "Version" : AsmDecl, AsmRefDecl {
+            Int32 major,
+            Int32 minor,
+            Int32 build,
+            Int32 revision
+        }
+
+    Assembly Reference:
+        "DeclareAssemblyReference" : Decl {
+            DottedName name,
+            List?<AsmRefDecl> declarations
+        }
+
+        base AsmRefDecl
+
+        "Hash" : AsmRefDecl {
+            Bytes hash
+        }
+
+        "PublicKeyToken" : AsmRefDecl {
+            Bytes token
+        }
+
+
+    Manifest Resources:
+        "ManifestResource" : Decl {
+            DottedName name,
+            enum Visibility { Default, Public, Private }
+            List?<ManResDecl> declarations
+        }
+
+        base ManResDecl
+
+        "AssemblyReference" : ManResDecl {
+            DottedName name
+        }
+
+        "FileLocation" : ManResDecl {
+            FileName name,
+            Int32 offset
+        }
+
+    Modules:
+        "ModuleDeclaration" : Decl {
+            FileName name
+        }
+
+        "ModuleReference" : Decl {
+            FileName name
+        }
+
+    Types:
+        base Type
+
+        "GenericTypeParamType" : Type {
+            Int32 index
+        }
+
+        "GenericMethodParamType" : Type {
+            Int32 index
+        }
+
+        "BuiltinType" : Type { - artificial, will be one of these options:
+            bool,
+            char,
+            int8,
+            int16,
+            int32,
+            int64,
+            unsigned int8,
+            unsigned int16,
+            unsigned int32,
+            unsigned int64,
+            float32,
+            float64,
+            string,
+            object,
+            native int,
+            native unsigned int,
+            void,
+            typedref
+        }
+
+        "ReferenceType" : Type {
+            TypeReference type
+        }
+
+        "ValueType" : Type {
+            TypeReference type
+        }
+
+        "ManagedPointer" : Type {
+            Type subtype
+        }
+
+        "UnmanagedPointer" : Type {
+            Type subtype
+        }
+
+        "MethodPointer" : Type {
+            CallConv callingConvention,
+            Type returnType,
+            Parameters params
+        }
+
+        "GenericType" : Type {
+            Type type,
+            GenArgs genericArgs
+        }
+
+        "ArrayType" : Type {
+            Type subtype,
+            List?<Bound> bounds
+        }
+
+        "ModOptType" : Type {
+            Type subtype,
+            TypeReference modType
+        }
+
+        "ModReqType" : Type {
+            Type subtype,
+            TypeReference modType
+        }
+
+        "PinnedType" : Type {
+            Type subtype
+        }
+
+        TypeSpec { - reducible to just the backing type representation, this is only used for syntax sugar
+            ResolutionScope |
+            TypeReference |
+            Type
+        }
+
+
+        TypeReference {
+            DottedName name,
+            ResolutionScope? scope,
+            List?<DottedName> subclasses
+        }
+
+        ResolutionScope {
+            DottedName moduleName |
+            AssemblyRefName assemblyName
+        }
+
+        AssemblyRefName {
+            DottedName name
+        }
+
+        NativeType {
+            - skipping this because its a lot of types, and is only used for 'marshal by' which won't be implimented soon
+        }
+
+        GenArgs {
+            List<Type> types;
+        }
+
+    Classes:
+        "ClassDeclaration" : Decl, ClassMember {
+            ClassHeader header,
+            List?<ClassMember> members
+        }
+
+        base ClassMember
+
+        ClassHeader {
+            List?<ClassAttr> attributes,
+            Identifier name,
+            GenPars? genericParams,
+            TypeSpec? baseClass,
+            List?<TypeSpec> interfaces
+        }
+
+        base enum ClassAttr
+        - these enums are not actually split like this syntactically, but most of these describe "only one of these" situations
+        enum "ClassVisibility" : ClassAttr { private, public }
+        enum "NestedAccessibility" : ClassAttr { nested assembly, nested famandassembly, nested family, nested private, nested public }
+        enum "ClassLayout" : ClassAttr { auto, explicit, sequential }
+        enum "ClassStringInterop" : ClassAttr { ansi, autochar, unicode }
+        enum "ClassInheritance" : ClassAttr { abstract, interface, sealed } - note: abstract + sealed = C# static class
+        enum "ClassAttrMisc" : ClassAttr { beforefieldinit rtspecialname, sealed, serializable }
+
+        GenPars {
+            List<GenPar> params
+        }
+
+        GenPar {
+            List?<GenParAttribs> attributes,
+            GenConstraints? constraints,
+            Identifier name
+        }
+
+        enum GenParAttribs {
+            +, -, class, valuetype, .ctor
+        }
+
+        GenConstraints {
+            List<Type> types
+        }
+
+        "ClassParamType" : ClassMember {
+            Int32 value
+        }
+
+    Extern CLasses:
+        "ExternClassDeclaration" : Decl {
+            enum ExportAttr { Public, NestedPublic },
+            DottedName name,
+            List?<ExternClassDecl> declarations
+        }
+
+        base ExternClassDecl
+
+        "FileReference" : ExternClassDecl {
+            DottedName name
+        }
+
+        "ExternClassReference" : ExternClassDecl {
+            DottedName name
+        }
+
+    Class explicit layout:
+        "LayoutPack" : ClassMember {
+            Int32 layoutpack
+        }
+
+        "LayoutSize" : ClassMember {
+            Int32 size
+        }
+
+    Methods:
+        "MethodDeclaration" : Decl, ClassMember {
+            MethodHeader header,
+            List?<MethodBodyItem> items
+        }
+
+        base MethodBodyItem
+
+        "MethodOverride" : ClassMember { - there is a way more complicated version of this involving generics, I will leave it out for now
+            TypeSpec baseclass,
+            MethodName basename,
+            CallConv callingConvention,
+            TypeSepc childclass,
+            MethodName childname,
+            Parameters methodParams
+        }
+
+        CallConv {
+            enum CallConvInstance { None, Instance, InstanceExplicit }
+            CallConvInstance? thisptrType,
+            CallKind callkind
+        }
+
+        CallKind {
+            default, vararg, - these are the only valid options for managed code
+            unmanaged cdecl, unmanaged fastcall, unmanaged stdcall, unmanaged thiscall
+        }
+
+        MethodHeader {
+            List?<MethAttr> attributes,
+            CallConv? callingConvention,
+            Type returnType,
+            NativeType? marshalReturnAs,
+            MethodName name,
+            GenPars? genericParams,
+            Parameters params,
+            List?<ImplAttrs> impleAttributes
+        }
+
+        enum MethAttr {
+            assembly, compilercontrolled, famandassem, family, famorassem,
+            abstract, final, hidebysig, newslot,
+            pinvokeimpl - this is more complicated, leaving it out because its only for calling native methods
+            private, public, rtspecialname, specialname, static, virtual, strict
+        }
+
+        enum ImplAttr {
+            cil, forwardref, internalcall, managed, native, noinlining, nooptimization, runtime, synchronized, unmanaged
+        }
+
+        MethodName {
+            .ctor |
+            .cctor |
+            DottedName
+        }
+
+        Parameters {
+            List?<Param> params
+        }
+
+        Param {
+            List?<ParamAttr> attributes, - only valid for managed / unmanaged pointer types
+            Type type,
+            NativeType? marshalAs,
+            Identifier? name - note that this is optional!
+        }
+
+        enum ParamAttr { [in], [out], [opt] }
+
+        "EmitByteItem" : MethodBodyItem {
+            Int32 byte
+        }
+
+        "EntryPointItem" : MethodBodyItem {} - not sure how to represent this, probably will end up as a flag on the method itself
+
+        "MethodLocals" : MethodBodyItem {
+            flag IsInit,
+            LocalsSignature signature
+        }
+
+        LocalsSignature {
+            List<Local> locals
+        }
+
+        Local {
+            Type type,
+            Identifier? name
+        }
+
+        "ParamInit" : MethodBodyItem {
+            Int32 index,
+            FiledInit? initalValue
+        }
+
+        "MethodParamType" : MethodBodyItem { - see ClassParamType, this can probably be combined with it
+            Int32 index
+        }
+
+        ScopeBlock : MethodBodyItem {
+            List?<MethodBodyItem> items
+        }
+
+    Fields:
+        "FieldDeclaration" : Decl, ClassMember {
+            FieldDecl declaration
+        }
+
+        FieldDecl {
+            Int32? explicitLayoutOffset,
+            List?<FieldAttr> attributes,
+            Type type,
+            Identifier name,
+            FieldInit? init |
+            DataLabel location
+        }
+
+        enum FieldAttr {
+            assembly, famandassem, family, famorassem, public, private, compilercontrolled,
+            initonly, literal,
+            marshal<NativeType>, - marshal as
+            notserialized, static,
+            rtspecialname, specialname - currently unused by runtime, just here for consistancy
+        }
+
+        base FieldInit
+
+        enum "BoolFieldInit" : FieldInit {
+            true, false
+        }
+
+        "ByteArrayFieldInit" : FieldInit {
+            Bytes bytes
+        }
+
+        "CharFieldInit" : FieldInit {
+            Int32 val
+        }
+
+        "Float32FieldInit" : FieldInit { - can be reduced to data only
+            Float64 | - this is `sic` 64 bits, see page 218
+            Int32
+        }
+
+        "Float64FieldInit" : FieldInit { - can be reduced to data only
+            Float64 |
+            Int64
+        }
+
+        "Int8FieldInit" : FieldInit {
+            flag IsUnsigned,
+            Int32 val
+        }
+
+        "Int16FieldInit" : FieldInit {
+            flag IsUnsigned,
+            Int32 val
+        }
+
+        "Int32FieldInit" : FieldInit {
+            flag IsUnsigned,
+            Int32 val
+        }
+
+        "Int64FieldInit" : FieldInit {
+            flag IsUnsigned,
+            Int64 val
+        }
+
+        "StringFieldInit" : FieldInit {
+            QSTRING val
+        }
+
+        "NullFieldInit" : FieldInit {} - also not sure what to do here, it's just 'nullref'
+
+    Events:
+        "EventDeclaration" : ClassMember {
+            EventHeader header,
+            List?<EventMember> members
+        }
+
+        base EventMember
+
+        EventHeader {
+            flag IsSpecialName,
+            flag IsRtSpecialName, - currently unused
+            TypeSpec delegate,
+            Identifier name,
+        }
+
+        "EventAdder" : EventMember { - method must be "specialname", other constraints apply
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? adderMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+        "EventFirer" : EventMember { - method must be "specialname", other constraints apply
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? firerMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+        "EventRemover" : EventMember { - method must be "specialname", other constraints apply
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? RemoverMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+        "EventOther" : EventMember { - method must be "specialname", other constraints apply
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? otherMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+    Properties:
+        "PropertyDeclaration" : ClassMember {
+            PropertyHeader header,
+            List?<PropMember> members
+        }
+
+        base PropMember
+
+        PropertyHeader {
+            flag IsSpecialName,
+            flag IsRtSpecialName, - currently unused
+            CallConv callingConvention,
+            Type type,
+            Identifier name,
+            Parameters params
+        }
+
+        "PropGetter" : PropMember { - underlying method should be marked "specialname"
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? getterMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+        "PropSetter" : PropMember { - underlying method should be marked "specialname"
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? setterMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+        "PropOther" : PropMember {
+            CallConv callConvention,
+            Type returnType,
+            TypeSpec? otherMethodOwner,
+            MethodName method,
+            Parameters params
+        }
+
+    Embedded Data:
+        "DataDeclaration" : Decl, ClassMember, MethodBodyItem {
+            DataDecl declaration
+        }
+
+        DataDecl {
+            DataLabel? definedLabel,
+            DdBody body
+        }
+
+        DdBody {
+            DdItem |
+            DdItemList
+        }
+
+        DdItemList {
+            List<DdItem> items
+        }
+
+        base DdItem
+
+        "LabelAddressDd" : DdItem {
+            Identifier labelname
+        }
+
+        "StringDd" : DdItem {
+            QSTRING string
+        }
+
+        "Float32Dd" : DdItem {
+            Float64 initVal, - the 64 bits is `sic` from the spec, see page 220
+            Int32 numberRepetitions
+        }
+
+        "Float64Dd" : DdItem {
+            Float64 initVal,
+            Int32 numberRepetitions
+        }
+
+        "Int8Dd" : DdItem {
+            Int32 initVal,
+            Int32 numberRepetitions
+        }
+
+        "Int16Dd" : DdItem {
+            Int32 initVal,
+            Int32 numberRepetitions
+        }
+
+        "Int32Dd" : DdItem {
+            Int32 initVal,
+            Int32 numberRepetitions
+        }
+
+        "Int64Dd" : DdItem {
+            Int64 initVal,
+            Int32 numberRepetitions
+        }
+
+    Exceptions:
+        SEHBlock : MethodBodyItem {
+            TryBlock trySection,
+            List<SEHClause> clauses
+        }
+
+        base SEHClause
+
+        "CodeSection" {
+            { Label labelStart, Label labelEnd } |
+            ScopeBlock scope
+        }
+
+        TryBlock {
+            CodeSection protectedSection
+        }
+
+        HandlerBlock {
+            CodeSection handlerSection
+        }
+
+        "CatchExClause" : SEHClause {
+            TypeReference typeToCatch,
+            HandlerBlock handler
+        }
+
+        "FaultExClause" : SEHClause {
+            HandlerBlock handler
+        }
+
+        "FilterExClause" : SEHClause {
+            {
+                Label filterLabel |
+                Scope filterSection
+            }
+            HandlerBlock handler
+        }
+
+        "FinallyExClause" : SEHClause {
+            HandlerBlock handler
+        }
+
+    Instructions and Such:
+        base Instr : MethodBodyItem
+
+
+

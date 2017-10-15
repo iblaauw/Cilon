@@ -1,0 +1,24 @@
+Must Have:
+    - custom classes
+    - methods
+    - fields
+    - access to most CRL classes / methods (i.e. System.Collections.List)
+    - ability to use generic classes / methods
+
+Nice to Have:
+    - Define generic classes / methods
+    - Exception handling
+    - Events
+    - Delegates (not sure if anything special is required)
+    - Short form of instructions
+    - virtual functions and overriding / hiding
+
+Won't have:
+    - native types / marshalling
+    - native method interop
+    - Security attributes
+    - Custom attributes
+    - prefixed instructions
+    - combining multiple files into one module
+    - non-verifiable instructions
+
