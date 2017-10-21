@@ -7,6 +7,7 @@
 #include <initializer_list>
 
 // This class keeps what a valid identifier is in IL
+// This class is immutable
 class Identifier final
 {
 public:

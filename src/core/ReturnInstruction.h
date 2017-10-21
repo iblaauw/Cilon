@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ILInstruction.h"
+#include "Instruction.h"
 
-class ReturnInstruction : public ILInstruction
+class ReturnInstruction : public Instruction
 {
 public:
     ReturnInstruction() {}

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ILInstruction.h"
+#include "Instruction.h"
 
-class LoadStringInstruction : public ILInstruction
+class LoadStringInstruction : public Instruction
 {
 public:
     LoadStringInstruction(std::string value);

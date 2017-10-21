@@ -303,7 +303,7 @@ Nodes:
         enum "ClassLayout" : ClassAttr { auto, explicit, sequential }
         enum "ClassStringInterop" : ClassAttr { ansi, autochar, unicode }
         enum "ClassInheritance" : ClassAttr { abstract, interface, sealed } - note: abstract + sealed = C# static class
-        enum "ClassAttrMisc" : ClassAttr { beforefieldinit rtspecialname, sealed, serializable }
+        enum "ClassAttrMisc" : ClassAttr { beforefieldinit rtspecialname, serializable }
 
         GenPars {
             List<GenPar> params
