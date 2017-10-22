@@ -17,12 +17,15 @@ public:
     Method(Name name, const MethodSignature& signature, ILType* owningType);
     Method(SpecialMethodType type, const MethodSignature& signature, ILType* owningType);
 
+    int GetStackSize() const { return stackSize; }
+    void SetStackSize(int value) { stackSize = value; }
+
     bool IsExternal() const;
     bool IsConstructor() const { return isConstructor; }
     bool IsTypeInitializer() const { return isTypeInitializer; }
 
     bool IsStatic() const { return isStatic; }
-    void SetStatic(bool value) { isStatic = value; }
+    void SetIsStatic(bool value) { isStatic = value; }
 
     bool IsEntryPoint() const { return isEntryPoint; }
     void SetIsEntryPoint(bool value) { isEntryPoint = value; }
@@ -43,9 +46,12 @@ private:
     ILType* owningType;
     Module* owningModule;
 
+    int stackSize = 0;
+
     bool isConstructor = false;
     bool isTypeInitializer = false;
     bool isStatic = false;
     bool isEntryPoint = false;
+
 };
 

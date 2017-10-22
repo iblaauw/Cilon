@@ -17,6 +17,11 @@ void MethodSignature::AddParameter(ILType* type, Identifier name)
     parameters.push_back(param);
 }
 
+void MethodSignature::AddParameter(ILType* type)
+{
+    AddParameter(type, "");
+}
+
 MethodParameter& MethodSignature::GetParameter(int index)
 {
     return parameters.at(index);

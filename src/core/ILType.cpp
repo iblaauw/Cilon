@@ -32,4 +32,22 @@ Method* ILType::GetOrCreateMethod(Name methodName, const MethodSignature& signat
     return methods.GetOrCreateValue(key, methodName, signature, this);
 }
 
+/*static*/ ILType* ILType::GetVoid()
+{
+    static ILType* type = new ILType("void", (Module*)nullptr);
+    return type;
+}
+
+/*static*/ ILType* ILType::GetString()
+{
+    static ILType* type = new ILType("string", (Module*)nullptr);
+    return type;
+}
+
+/*static*/ ILType* ILType::GetInt()
+{
+    static ILType* type = new ILType("int32", (Module*)nullptr);
+    return type;
+}
+
 

@@ -20,6 +20,11 @@ public:
 
     Method* GetOrCreateMethod(Name methodName, const MethodSignature& signature);
 
+    // Common builtins
+    static ILType* GetVoid();
+    static ILType* GetString();
+    static ILType* GetInt();
+
 private:
     Name name;
     UniqueDict<std::string, Method> methods;

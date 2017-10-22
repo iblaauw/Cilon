@@ -25,6 +25,7 @@ public:
     int NumParams() const { return parameters.size(); }
 
     void AddParameter(ILType* type, Identifier name);
+    void AddParameter(ILType* type);
 
     MethodParameter& GetParameter(int index);
     const MethodParameter& GetParameter(int index) const;

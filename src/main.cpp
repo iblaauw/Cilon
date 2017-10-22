@@ -1,6 +1,9 @@
 #include <iostream>
 
 #include "ILFile.h"
+#include "LoadStringInstruction.h"
+#include "CallInstruction.h"
+#include "ReturnInstruction.h"
 
 int main()
 {
@@ -11,10 +14,12 @@ int main()
     ExternalAssembly* mscorlib = file.GetOrCreateAssemblyReference("mscorlib");
 
     ILType* voidType = ILType::GetVoid();
-    std::shared_ptr<FunctionSignature> mainSignature = std::make_shared<FunctionSignature>(voidType);
+    MethodSignature mainSignature { voidType }; // void()
+
+    Module* currentModule = file.GetCurrentAssembly()->GetCurrentModule();
 
     // Create main function
-    MethodDefinition* mainFunc = file.CreateMethod("main", mainSignature);
+    Method* mainFunc = currentModule->GetOrCreateMethod("main", mainSignature);
     mainFunc->SetIsStatic(true);
     mainFunc->SetIsEntryPoint(true);
     mainFunc->SetStackSize(1);
@@ -25,10 +30,11 @@ int main()
 
     // Call a function
     ILType* stringType = ILType::GetString();
-    std::shared_ptr<FunctionSignature> funcSignature = std::make_shared<FunctionSignature>(voidType, stringType);
+    MethodSignature funcSignature { voidType };
+    funcSignature.AddParameter(stringType);
 
-    ILType* console = mscorlib->GetType({"System", "Console"});
-    MethodReference* writeline = console->GetMethod("WriteLine", funcSignature);
+    ILType* console = mscorlib->GetOrCreateExportedType({"System", "Console"});
+    Method* writeline = console->GetOrCreateMethod("WriteLine", funcSignature);
 
     auto callInstr = std::make_unique<CallInstruction>(writeline);
     mainFunc->AddInstruction(std::move(callInstr));
