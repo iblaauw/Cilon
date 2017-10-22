@@ -10,6 +10,7 @@ def main():
     factory.builtin_rules.CXXFLAGS.append("-std=c++11")
     factory.builtin_rules.CXXFLAGS.append("-Isrc/core")
     factory.builtin_rules.CXXFLAGS.append("-Isrc/generators")
+    factory.builtin_rules.CXXFLAGS.append("-g")
 
     factory.builtin_rules.UseDefaultCppRules()
 

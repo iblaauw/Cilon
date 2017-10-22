@@ -37,6 +37,8 @@ private:
 class InternalAssembly : public Assembly
 {
 public:
+    using const_iterator = typename UniqueDict<std::string, Module>::const_iterator;
+
     InternalAssembly(Name assemblyName, Name moduleName);
 
     bool IsExternal() const override { return false; }
@@ -44,6 +46,9 @@ public:
     Module* GetCurrentModule() const { return currentModule.get(); }
 
     Module* GetOrCreateModuleReference(Name moduleName);
+
+    const_iterator begin() const { return externalModules.begin(); }
+    const_iterator end() const { return externalModules.begin(); }
 
 private:
     std::unique_ptr<Module> currentModule;

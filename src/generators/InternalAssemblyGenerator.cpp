@@ -2,6 +2,7 @@
 
 #include "Exceptions.h"
 #include "Assembly.h"
+#include "ModuleGenerator.h"
 
 InternalAssemblyGenerator::InternalAssemblyGenerator(const InternalAssembly* assembly)
     : assembly(assembly)
@@ -13,6 +14,16 @@ InternalAssemblyGenerator::InternalAssemblyGenerator(const InternalAssembly* ass
 void InternalAssemblyGenerator::Generate(std::ostream& out) const
 {
     out << ".assembly " << assembly->GetName() << "{}" << std::endl;
-    out << "//TODO: generate methods / classes" << std::endl;
+    out << std::endl;
+
+    for (const auto& keyval : *assembly)
+    {
+        const Module* externalModule = keyval.second.get();
+        ModuleGenerator generator { externalModule };
+        generator.Generate(out);
+    }
+
+    ModuleGenerator generator { assembly->GetCurrentModule() };
+    generator.Generate(out);
 }
 

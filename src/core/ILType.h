@@ -25,6 +25,10 @@ public:
     static ILType* GetString();
     static ILType* GetInt();
 
+    const Name& GetName() const { return name; }
+    Assembly* GetOwningAssembly() const { return owningAssembly; }
+    Module* GetOwningModule() const { return owningModule; }
+
 private:
     Name name;
     UniqueDict<std::string, Method> methods;

@@ -17,6 +17,8 @@ public:
     Method(Name name, const MethodSignature& signature, ILType* owningType);
     Method(SpecialMethodType type, const MethodSignature& signature, ILType* owningType);
 
+    const Name& GetName() const { return name; }
+
     int GetStackSize() const { return stackSize; }
     void SetStackSize(int value) { stackSize = value; }
 

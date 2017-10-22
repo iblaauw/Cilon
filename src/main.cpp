@@ -5,9 +5,15 @@
 #include "CallInstruction.h"
 #include "ReturnInstruction.h"
 
+#include "TypeGenerator.h"
+
 int main()
 {
     auto& output = std::cout;
+
+    /*TypeGenerator gen { ILType::GetVoid() };
+    gen.Generate(output);
+    return 0;*/
 
     ILFile file("MyModule", /*Current assembly*/ "MyAssembly");
 
@@ -44,5 +50,6 @@ int main()
 
     // Generate the file
     file.Generate(output);
+    return 0;
 }
 

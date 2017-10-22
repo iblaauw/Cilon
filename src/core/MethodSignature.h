@@ -1,19 +1,9 @@
 #pragma once
 
 #include "Name.h"
+#include "Range.h"
 
 class ILType;
-
-class MethodParameter
-{
-public:
-    MethodParameter(ILType* type, Identifier name)
-        : type(type), name(name)
-    {}
-
-    ILType* type;
-    Identifier name;
-};
 
 class MethodSignature
 {
@@ -24,14 +14,19 @@ public:
 
     int NumParams() const { return parameters.size(); }
 
-    void AddParameter(ILType* type, Identifier name);
     void AddParameter(ILType* type);
 
-    MethodParameter& GetParameter(int index);
-    const MethodParameter& GetParameter(int index) const;
+    ILType* GetParameterType(int index) const;
 
 private:
     ILType* returnType;
-    std::vector<MethodParameter> parameters;
+    std::vector<ILType*> parameters;
+
+public:
+    using const_iter = decltype(parameters.cbegin());
+    Range<const_iter> AllParameters() const
+    {
+        return { parameters.begin(), parameters.end() };
+    }
 };
 
