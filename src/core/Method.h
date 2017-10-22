@@ -1,5 +1,13 @@
 #pragma once
 
+#include <memory>
+
+#include "Name.h"
+#include "Instruction.h"
+#include "MethodSignature.h"
+
+class Module;
+
 class Method
 {
 public:

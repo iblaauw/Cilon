@@ -1,26 +1,33 @@
 #include "ILFileGenerator.h"
 
-ILFileGenerator::ILFileGenerator(ILFile* file)
+#include "Exceptions.h"
+#include "ILFile.h"
+#include "InternalAssemblyGenerator.h"
+#include "ExternalAssemblyGenerator.h"
+
+ILFileGenerator::ILFileGenerator(const ILFile* file)
     : file(file)
 {
     if (file == nullptr)
         throw NullArgumentException("'file' cannot be null");
 }
 
-void ILFileGenerator::Generator(std::ostream& out) const
+void ILFileGenerator::Generate(std::ostream& out) const
 {
+    const auto* currentAssembly = file->GetCurrentAssembly();
+    const Name& name = currentAssembly->GetCurrentModule()->GetName();
+
     out << "//*****************************//" << std::endl;
     out << "// Begin file " << name << std::endl;
     out << "//*****************************//" << std::endl;
 
     for (const auto& keyval : *file)
     {
-        const ExternalAssembly* assemblyRef = keyval.second;
+        const ExternalAssembly* assemblyRef = keyval.second.get();
         ExternalAssemblyGenerator generator { assemblyRef };
-        ref.Generator(out);
+        generator.Generate(out);
     }
 
-    const auto* currentAssembly = file->GetCurrentAssembly();
     InternalAssemblyGenerator internalGenerator { currentAssembly };
     internalGenerator.Generate(out);
 

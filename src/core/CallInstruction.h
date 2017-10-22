@@ -2,6 +2,8 @@
 
 #include "Instruction.h"
 
+class Method;
+
 class CallInstruction : public Instruction
 {
 public:

@@ -2,6 +2,8 @@
 
 #include "Generator.h"
 
+class ILFile;
+
 class ILFileGenerator : public Generator
 {
 public:

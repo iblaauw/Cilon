@@ -1,8 +1,16 @@
 #pragma once
 
+#include "Name.h"
+
+class ILType;
+
 class MethodParameter
 {
 public:
+    MethodParameter(ILType* type, Identifier name)
+        : type(type), name(name)
+    {}
+
     ILType* type;
     Identifier name;
 };

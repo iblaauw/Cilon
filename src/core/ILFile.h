@@ -1,17 +1,17 @@
 #pragma once
 
 #include <iostream>
-#include <memory>
 
 #include "Name.h"
+#include "UniqueDict.h"
 #include "Assembly.h"
-#include "MethodDefinition.h"
-#include "FunctionSignature.h"
 
 class ILFile
 {
 public:
-    ILFile(Name assemblyName, Name moduleName);
+    using const_iterator = typename UniqueDict<std::string, ExternalAssembly>::const_iterator;
+
+    ILFile(Name moduleName, Name assemblyName);
 
     InternalAssembly* GetCurrentAssembly() const
     {
@@ -20,12 +20,12 @@ public:
 
     ExternalAssembly* GetOrCreateAssemblyReference(Name assemblyName);
 
-    auto begin() const -> decltype(assemblyReferences.begin())
+    const_iterator begin() const
     {
         return assemblyReferences.begin();
     }
 
-    auto end() const -> decltype(assemblyReferences.end())
+    const_iterator end() const
     {
         return assemblyReferences.end();
     }

@@ -10,7 +10,7 @@ ILType* Module::GetOrCreateType(Name typeName)
     return types.GetOrCreateValue(key, typeName, this);
 }
 
-Method* Module::GetOrCreateMethod(Name methodName, MethodSignature signature)
+Method* Module::GetOrCreateMethod(Name methodName, const MethodSignature& signature)
 {
     std::string key = methodName.GetString();
     return methods.GetOrCreateValue(key, methodName, signature, this);

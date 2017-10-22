@@ -1,5 +1,9 @@
 #include "Method.h"
 
+#include "Exceptions.h"
+#include "ILType.h"
+#include "Module.h"
+
 Method::Method(Name name, const MethodSignature& signature, Module* owningModule)
     : name(name), signature(signature), owningType(nullptr), owningModule(owningModule)
 {
@@ -10,7 +14,7 @@ Method::Method(Name name, const MethodSignature& signature, ILType* owningType)
     : name(name), signature(signature), owningType(owningType), owningModule(nullptr)
 {}
 
-Method::Method(SpecialMethodType type, MethodSignature signature, ILType* owningType)
+Method::Method(SpecialMethodType type, const MethodSignature& signature, ILType* owningType)
     : signature(signature), owningType(owningType), owningModule(nullptr)
 {
     if (type == SpecialMethodType::Constructor)
@@ -42,7 +46,7 @@ bool Method::IsExternal() const
 void Method::AddInstruction(std::unique_ptr<Instruction> instr)
 {
     if (IsExternal())
-        throw InvalidOperatoion("Cannot set instructions for an externally defined method");
+        throw InvalidOperationException("Cannot set instructions for an externally defined method");
 
     instructions.emplace_back(std::move(instr));
 }

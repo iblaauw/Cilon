@@ -5,6 +5,8 @@
 #include <functional>
 #include <stdexcept>
 
+#include "Utils.h" // for std::make_unique
+
 class NotFoundException : std::runtime_error
 {
 public:
@@ -17,7 +19,7 @@ class UniqueDict
 {
 public:
     using ValPtr = std::unique_ptr<TVal>;
-    using const_iterator = std::unordered_map<TKey, ValPtr>::const_iterator;
+    using const_iterator = typename std::unordered_map<TKey, ValPtr>::const_iterator;
 
     UniqueDict() {}
 

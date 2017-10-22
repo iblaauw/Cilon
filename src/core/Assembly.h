@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Name.h"
-#include "ILType.h"
+#include "UniqueDict.h"
+#include "Module.h"
+
+class ILType;
 
 // Abstract base clase for assemblies
 class Assembly
@@ -12,7 +15,7 @@ public:
     {}
 
     const Name& GetName() const { return name; }
-    virtual bool IsExternal() const override = 0;
+    virtual bool IsExternal() const = 0;
 
 private:
     Name name;

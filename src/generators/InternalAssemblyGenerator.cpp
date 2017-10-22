@@ -1,10 +1,13 @@
 #include "InternalAssemblyGenerator.h"
 
-InternalAssemblyGenerator::InternalAssemblyGenerator(InternalAssembly* assembly)
+#include "Exceptions.h"
+#include "Assembly.h"
+
+InternalAssemblyGenerator::InternalAssemblyGenerator(const InternalAssembly* assembly)
     : assembly(assembly)
 {
     if (assembly == nullptr)
-        throw NullArgmentException("'assembly' cannot be null");
+        throw NullArgumentException("'assembly' cannot be null");
 }
 
 void InternalAssemblyGenerator::Generate(std::ostream& out) const

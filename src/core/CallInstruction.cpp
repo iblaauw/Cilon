@@ -1,5 +1,7 @@
 #include "CallInstruction.h"
 
+#include "Exceptions.h"
+
 CallInstruction::CallInstruction(Method* method)
     : method(method)
 {

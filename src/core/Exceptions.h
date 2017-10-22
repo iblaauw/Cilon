@@ -27,10 +27,16 @@ public:
     InvalidArgumentException(std::string message) : std::runtime_error(message) {}
 };
 
+class InvalidOperationException : std::runtime_error
+{
+public:
+    InvalidOperationException(std::string message) : std::runtime_error(message) {}
+};
+
 class NotImplementedException : std::runtime_error
 {
 public:
-    NotImplementedException() : std::runtime_error() {}
+    NotImplementedException() : std::runtime_error("Not Implemented") {}
 };
 
 

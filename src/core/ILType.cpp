@@ -1,12 +1,14 @@
 #include "ILType.h"
 
+#include "Module.h"
+
 ILType::ILType(Name name, Module* owningModule)
     : name(name), owningAssembly(nullptr), owningModule(owningModule)
 {}
 
-ILType::ILType(Name name, Assembly* owningAssembly);
+ILType::ILType(Name name, Assembly* owningAssembly)
     : name(name), owningAssembly(owningAssembly), owningModule(nullptr)
-
+{}
 
 bool ILType::IsExternal() const
 {
@@ -24,7 +26,7 @@ bool ILType::IsBuiltin() const
     return owningAssembly == nullptr && owningModule == nullptr;
 }
 
-Method* ILType::GetOrCreateMethod(Name methodName, MethodSignature signature)
+Method* ILType::GetOrCreateMethod(Name methodName, const MethodSignature& signature)
 {
     std::string key = methodName.GetString();
     return methods.GetOrCreateValue(key, methodName, signature, this);

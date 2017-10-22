@@ -1,6 +1,6 @@
 #include "Assembly.h"
 
-#include "Utils.h"
+#include "Method.h"
 
 ExternalAssembly::ExternalAssembly(Name assemblyName)
     : Assembly(assemblyName), ownedTypes()

@@ -5,6 +5,6 @@
 class Generator
 {
 public:
-    void Generate(std::ostream& out) const  = 0;
+    virtual void Generate(std::ostream& out) const  = 0;
 };
 

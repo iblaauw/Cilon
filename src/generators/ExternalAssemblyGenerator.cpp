@@ -1,10 +1,13 @@
-#include "InternalAssemblyGenerator.h"
+#include "ExternalAssemblyGenerator.h"
 
-ExternalAssemblyGenerator::ExternalAssemblyGenerator(ExternalAssembly* assembly)
+#include "Exceptions.h"
+#include "Assembly.h"
+
+ExternalAssemblyGenerator::ExternalAssemblyGenerator(const ExternalAssembly* assembly)
     : assembly(assembly)
 {
     if (assembly == nullptr)
-        throw NullArgmentException("'assembly' cannot be null");
+        throw NullArgumentException("'assembly' cannot be null");
 }
 
 void ExternalAssemblyGenerator::Generate(std::ostream& out) const

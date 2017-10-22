@@ -1,6 +1,12 @@
 #pragma once
 
 #include "Name.h"
+#include "UniqueDict.h"
+
+class Module;
+class Assembly;
+class Method;
+class MethodSignature;
 
 class ILType
 {
@@ -12,7 +18,7 @@ public:
     bool IsBuiltin() const;
     bool IsReferenceType() const { return true; } // TODO: implement
 
-    Method* GetOrCreateMethod(Name methodName, MethodSignature signature);
+    Method* GetOrCreateMethod(Name methodName, const MethodSignature& signature);
 
 private:
     Name name;

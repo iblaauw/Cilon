@@ -2,12 +2,14 @@
 
 #include "Generator.h"
 
+class InternalAssembly;
+
 class InternalAssemblyGenerator : public Generator
 {
 public:
-    InternalAssemblyGenerator(InternalAssembly* assembly);
+    InternalAssemblyGenerator(const InternalAssembly* assembly);
     void Generate(std::ostream& out) const override;
 private:
-    InternalAssembly* assembly;
+    const InternalAssembly* assembly;
 };
 

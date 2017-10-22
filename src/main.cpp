@@ -1,21 +1,14 @@
 #include <iostream>
 
 #include "ILFile.h"
-#include "AssemblyReference.h"
-#include "AssemblyDeclaration.h"
-#include "MethodDefinition.h"
-#include "LoadStringInstruction.h"
-#include "CallInstruction.h"
-#include "ReturnInstruction.h"
-#include "Utils.h"
 
 int main()
 {
     auto& output = std::cout;
 
-    ILFile file("test.il", /*Current assembly*/ "MyAssembly");
+    ILFile file("MyModule", /*Current assembly*/ "MyAssembly");
 
-    Assembly* mscorlib = file.CreateReference("mscorlib");
+    ExternalAssembly* mscorlib = file.GetOrCreateAssemblyReference("mscorlib");
 
     ILType* voidType = ILType::GetVoid();
     std::shared_ptr<FunctionSignature> mainSignature = std::make_shared<FunctionSignature>(voidType);
