@@ -2,6 +2,6 @@
 
 void ReturnInstruction::Generate(std::ostream& out) const
 {
-    out << "ret" << std::endl;
+    out << "    ret" << std::endl;
 }
 

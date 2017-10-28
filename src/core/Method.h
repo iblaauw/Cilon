@@ -39,6 +39,10 @@ public:
 
     void AddInstruction(std::unique_ptr<Instruction> instr);
 
+    using instr_iter = typename std::vector<std::unique_ptr<Instruction>>::const_iterator;
+
+    Range<instr_iter> AllInstructions() const { return { instructions.begin(), instructions.end() }; }
+
 private:
     std::vector<std::unique_ptr<Instruction>> instructions;
 
@@ -54,6 +58,5 @@ private:
     bool isTypeInitializer = false;
     bool isStatic = false;
     bool isEntryPoint = false;
-
 };
 

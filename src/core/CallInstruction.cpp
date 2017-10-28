@@ -1,6 +1,7 @@
 #include "CallInstruction.h"
 
 #include "Exceptions.h"
+#include "MethodCallGenerator.h"
 
 CallInstruction::CallInstruction(Method* method)
     : method(method)
@@ -11,8 +12,9 @@ CallInstruction::CallInstruction(Method* method)
 
 void CallInstruction::Generate(std::ostream& out) const
 {
-    out << "call ";
-    //method->GenerateCallHeader(out); //TODO: implement
+    out << "    call ";
+    MethodCallGenerator callGenerator { method };
+    callGenerator.Generate(out);
     out << std::endl;
 }
 

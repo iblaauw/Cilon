@@ -21,9 +21,24 @@ void MethodDefGenerator::Generate(std::ostream& out) const
     TypeGenerator returnTypeGen { returnType };
     returnTypeGen.Generate(out);
 
-    out << " " << method->GetName() << " (";
+    out << " " << method->GetName();
 
+    GenerateParams(out, signature);
+
+    out << " cil managed" << std::endl;
+
+    out << "{" << std::endl;
+
+    GenerateMethodBody(out);
+
+    out << "}" << std::endl;
+}
+
+void MethodDefGenerator::GenerateParams(std::ostream& out, const MethodSignature& signature) const
+{
     // Generate parameters
+    out << "(";
+
     bool first = true;
     for (ILType* paramType : signature.AllParameters())
     {
@@ -39,12 +54,29 @@ void MethodDefGenerator::Generate(std::ostream& out) const
         TypeGenerator paramGen { paramType };
         paramGen.Generate(out);
     }
+
     // TODO: named parameters
 
-    out << ") cil managed" << std::endl;
-    out << "{" << std::endl;
-    out << "//TODO: Definition" << std::endl;
-    out << "}" << std::endl;
+    out << ")";
+}
+
+void MethodDefGenerator::GenerateMethodBody(std::ostream& out) const
+{
+    if (method->IsEntryPoint())
+    {
+        out << "    .entrypoint" << std::endl;
+    }
+
+    int stackSize = method->GetStackSize();
+    if (stackSize > 0)
+    {
+        out << "    .maxstack " << stackSize << std::endl;
+    }
+
+    for (auto& instr : method->AllInstructions())
+    {
+        instr->Generate(out);
+    }
 }
 
 
