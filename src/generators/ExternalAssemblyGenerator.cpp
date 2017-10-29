@@ -10,7 +10,7 @@ ExternalAssemblyGenerator::ExternalAssemblyGenerator(const ExternalAssembly* ass
         throw NullArgumentException("'assembly' cannot be null");
 }
 
-void ExternalAssemblyGenerator::Generate(std::ostream& out) const
+void ExternalAssemblyGenerator::Generate(Stream& out) const
 {
     out << ".assembly extern " << assembly->GetName() << " {}" << std::endl;
 }

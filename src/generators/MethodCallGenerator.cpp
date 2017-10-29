@@ -9,7 +9,7 @@ MethodCallGenerator::MethodCallGenerator(const Method* method)
 {
 }
 
-void MethodCallGenerator::Generate(std::ostream& out) const
+void MethodCallGenerator::Generate(Stream& out) const
 {
     const auto& signature = method->GetSignature();
 
@@ -31,7 +31,7 @@ void MethodCallGenerator::Generate(std::ostream& out) const
     GenerateParams(out, signature);
 }
 
-void MethodCallGenerator::GenerateParams(std::ostream& out, const MethodSignature& signature) const
+void MethodCallGenerator::GenerateParams(Stream& out, const MethodSignature& signature) const
 {
     out << "(";
     bool first = true;

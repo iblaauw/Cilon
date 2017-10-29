@@ -15,7 +15,7 @@ ClassGenerator::ClassGenerator(const ILType* type)
         throw InvalidOperationException("Cannot generate a definition for an external class");
 }
 
-void ClassGenerator::Generate(std::ostream& out) const
+void ClassGenerator::Generate(Stream& out) const
 {
     out << ".class private auto ansi ";
 
@@ -25,7 +25,7 @@ void ClassGenerator::Generate(std::ostream& out) const
     out << std::endl;
 
     out << "{" << std::endl;
-    out << "    //TODO: class definitions" << std::endl;
+    out.IncrementIndent();
 
     for (const auto& keyval : type->AllMethods())
     {
@@ -36,6 +36,7 @@ void ClassGenerator::Generate(std::ostream& out) const
         out << std::endl;
     }
 
+    out.DecrementIndent();
     out << "}" << std::endl;
 }
 

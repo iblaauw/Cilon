@@ -9,7 +9,7 @@ class CallInstruction : public Instruction
 public:
     CallInstruction(Method* method);
 
-    void Generate(std::ostream& out) const override;
+    void Generate(Stream& out) const override;
 
 private:
     Method* method;

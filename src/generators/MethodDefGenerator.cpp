@@ -7,7 +7,7 @@ MethodDefGenerator::MethodDefGenerator(const Method* method)
     : method(method)
 {}
 
-void MethodDefGenerator::Generate(std::ostream& out) const
+void MethodDefGenerator::Generate(Stream& out) const
 {
     out << ".method ";
     if (method->IsStatic())
@@ -29,12 +29,14 @@ void MethodDefGenerator::Generate(std::ostream& out) const
 
     out << "{" << std::endl;
 
+    out.IncrementIndent();
     GenerateMethodBody(out);
+    out.DecrementIndent();
 
     out << "}" << std::endl;
 }
 
-void MethodDefGenerator::GenerateParams(std::ostream& out, const MethodSignature& signature) const
+void MethodDefGenerator::GenerateParams(Stream& out, const MethodSignature& signature) const
 {
     // Generate parameters
     out << "(";
@@ -60,17 +62,17 @@ void MethodDefGenerator::GenerateParams(std::ostream& out, const MethodSignature
     out << ")";
 }
 
-void MethodDefGenerator::GenerateMethodBody(std::ostream& out) const
+void MethodDefGenerator::GenerateMethodBody(Stream& out) const
 {
     if (method->IsEntryPoint())
     {
-        out << "    .entrypoint" << std::endl;
+        out << ".entrypoint" << std::endl;
     }
 
     int stackSize = method->GetStackSize();
     if (stackSize > 0)
     {
-        out << "    .maxstack " << stackSize << std::endl;
+        out << ".maxstack " << stackSize << std::endl;
     }
 
     for (auto& instr : method->AllInstructions())

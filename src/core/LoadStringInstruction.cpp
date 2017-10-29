@@ -4,8 +4,8 @@ LoadStringInstruction::LoadStringInstruction(std::string value)
     : value(value)
 {}
 
-void LoadStringInstruction::Generate(std::ostream& out) const
+void LoadStringInstruction::Generate(Stream& out) const
 {
-    out << "    ldstr " << '"' << value << '"' << std::endl;
+    out << "ldstr " << '"' << value << '"' << std::endl;
 }
 

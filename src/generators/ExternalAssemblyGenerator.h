@@ -8,7 +8,7 @@ class ExternalAssemblyGenerator : public Generator
 {
 public:
     ExternalAssemblyGenerator(const ExternalAssembly* assembly);
-    void Generate(std::ostream& out) const override;
+    void Generate(Stream& out) const override;
 private:
     const ExternalAssembly* assembly;
 };

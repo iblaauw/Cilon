@@ -8,7 +8,7 @@ ModuleGenerator::ModuleGenerator(const Module* module)
     : module(module)
 {}
 
-void ModuleGenerator::Generate(std::ostream& out) const
+void ModuleGenerator::Generate(Stream& out) const
 {
     out << ".module ";
     if (module->IsExternal())

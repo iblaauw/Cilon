@@ -8,7 +8,7 @@ class ILFileGenerator : public Generator
 {
 public:
     ILFileGenerator(const ILFile* file);
-    void Generate(std::ostream& out) const override;
+    void Generate(Stream& out) const override;
 private:
     const ILFile* file;
 };

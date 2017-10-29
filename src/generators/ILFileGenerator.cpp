@@ -12,7 +12,7 @@ ILFileGenerator::ILFileGenerator(const ILFile* file)
         throw NullArgumentException("'file' cannot be null");
 }
 
-void ILFileGenerator::Generate(std::ostream& out) const
+void ILFileGenerator::Generate(Stream& out) const
 {
     const auto* currentAssembly = file->GetCurrentAssembly();
     const Name& name = currentAssembly->GetCurrentModule()->GetName();

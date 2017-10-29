@@ -11,7 +11,7 @@ InternalAssemblyGenerator::InternalAssemblyGenerator(const InternalAssembly* ass
         throw NullArgumentException("'assembly' cannot be null");
 }
 
-void InternalAssemblyGenerator::Generate(std::ostream& out) const
+void InternalAssemblyGenerator::Generate(Stream& out) const
 {
     out << ".assembly " << assembly->GetName() << "{}" << std::endl;
     out << std::endl;

@@ -10,9 +10,9 @@ CallInstruction::CallInstruction(Method* method)
         throw NullArgumentException("Method cannot be null");
 }
 
-void CallInstruction::Generate(std::ostream& out) const
+void CallInstruction::Generate(Stream& out) const
 {
-    out << "    call ";
+    out << "call ";
     MethodCallGenerator callGenerator { method };
     callGenerator.Generate(out);
     out << std::endl;

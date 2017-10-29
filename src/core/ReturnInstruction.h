@@ -6,6 +6,6 @@ class ReturnInstruction : public Instruction
 {
 public:
     ReturnInstruction() {}
-    void Generate(std::ostream& out) const override;
+    void Generate(Stream& out) const override;
 };
 

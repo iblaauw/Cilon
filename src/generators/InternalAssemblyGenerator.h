@@ -8,7 +8,7 @@ class InternalAssemblyGenerator : public Generator
 {
 public:
     InternalAssemblyGenerator(const InternalAssembly* assembly);
-    void Generate(std::ostream& out) const override;
+    void Generate(Stream& out) const override;
 private:
     const InternalAssembly* assembly;
 };

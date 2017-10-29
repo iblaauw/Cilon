@@ -12,7 +12,7 @@ TypeReferenceGenerator::TypeReferenceGenerator(const ILType* type)
         throw NullArgumentException("'type' cannot be null");
 }
 
-void TypeReferenceGenerator::Generate(std::ostream& out) const
+void TypeReferenceGenerator::Generate(Stream& out) const
 {
     if (!type->IsBuiltin() && type->IsExternal())
     {
@@ -39,7 +39,7 @@ TypeGenerator::TypeGenerator(const ILType* type)
         throw NullArgumentException("'type' cannot be null");
 }
 
-void TypeGenerator::Generate(std::ostream& out) const
+void TypeGenerator::Generate(Stream& out) const
 {
     if (!type->IsBuiltin())
     {
@@ -71,7 +71,7 @@ TypeSpecGenerator::TypeSpecGenerator(const ILType* type)
         throw NullArgumentException("'type' cannot be null");
 }
 
-void TypeSpecGenerator::Generate(std::ostream& out) const
+void TypeSpecGenerator::Generate(Stream& out) const
 {
     if (TypeGenerator::RequiresFullType(type))
     {

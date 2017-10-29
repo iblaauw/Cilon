@@ -16,7 +16,8 @@ ExternalAssembly* ILFile::GetOrCreateAssemblyReference(Name assemblyName)
 
 void ILFile::Generate(std::ostream& out) const
 {
+    Stream stream(out);
     ILFileGenerator generator { this };
-    generator.Generate(out);
+    generator.Generate(stream);
 }
 
