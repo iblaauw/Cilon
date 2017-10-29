@@ -12,10 +12,7 @@ CallInstruction::CallInstruction(Method* method)
 
 void CallInstruction::Generate(Stream& out) const
 {
-    out << "call ";
-    MethodCallGenerator callGenerator { method };
-    callGenerator.Generate(out);
-    out << std::endl;
+    out << "call " << MethodCallGenerator(method) << std::endl;
 }
 
 

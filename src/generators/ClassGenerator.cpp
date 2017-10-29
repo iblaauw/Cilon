@@ -17,12 +17,7 @@ ClassGenerator::ClassGenerator(const ILType* type)
 
 void ClassGenerator::Generate(Stream& out) const
 {
-    out << ".class private auto ansi ";
-
-    TypeSpecGenerator classNameGenerator(type);
-    classNameGenerator.Generate(out);
-
-    out << std::endl;
+    out << ".class private auto ansi " << TypeSpecGenerator(type) << std::endl;
 
     out << "{" << std::endl;
     out.IncrementIndent();
@@ -30,10 +25,8 @@ void ClassGenerator::Generate(Stream& out) const
     for (const auto& keyval : type->AllMethods())
     {
         const Method* method = keyval.second.get();
-        MethodDefGenerator defGenerator { method };
-        defGenerator.Generate(out);
 
-        out << std::endl;
+        out << MethodDefGenerator(method) << std::endl;
     }
 
     out.DecrementIndent();
