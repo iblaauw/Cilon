@@ -16,7 +16,7 @@ void InternalAssemblyGenerator::Generate(std::ostream& out) const
     out << ".assembly " << assembly->GetName() << "{}" << std::endl;
     out << std::endl;
 
-    for (const auto& keyval : *assembly)
+    for (const auto& keyval : assembly->AllExternalModules())
     {
         const Module* externalModule = keyval.second.get();
         ModuleGenerator generator { externalModule };

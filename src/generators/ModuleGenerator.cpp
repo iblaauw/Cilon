@@ -2,6 +2,7 @@
 
 #include "Module.h"
 #include "MethodDefGenerator.h"
+#include "ClassGenerator.h"
 
 ModuleGenerator::ModuleGenerator(const Module* module)
     : module(module)
@@ -29,8 +30,10 @@ void ModuleGenerator::Generate(std::ostream& out) const
 
         for (const auto& keyval : module->AllTypes())
         {
-            const ILType* method = keyval.second.get();
-            // TODO: type definitions
+            const ILType* type = keyval.second.get();
+
+            ClassGenerator classGenerator { type };
+            classGenerator.Generate(out);
         }
     }
 }

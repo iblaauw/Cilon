@@ -5,15 +5,9 @@
 #include "CallInstruction.h"
 #include "ReturnInstruction.h"
 
-#include "TypeGenerator.h"
-
 int main()
 {
     auto& output = std::cout;
-
-    /*TypeGenerator gen { ILType::GetVoid() };
-    gen.Generate(output);
-    return 0;*/
 
     ILFile file("MyModule", /*Current assembly*/ "MyAssembly");
 
@@ -45,8 +39,26 @@ int main()
     auto callInstr = std::make_unique<CallInstruction>(writeline);
     mainFunc->AddInstruction(std::move(callInstr));
 
+    auto loadstr2 = std::make_unique<LoadStringInstruction>("Hello Eric :D");
+    mainFunc->AddInstruction(std::move(loadstr2));
+
+    auto callInstr2 = std::make_unique<CallInstruction>(writeline);
+    mainFunc->AddInstruction(std::move(callInstr2));
+
     auto retInstr = std::make_unique<ReturnInstruction>();
     mainFunc->AddInstruction(std::move(retInstr));
+
+    // Create a new class
+    ILType* customType = currentModule->GetOrCreateType("MyType");
+
+    // Echo function
+    MethodSignature echoSignature { stringType };
+    funcSignature.AddParameter(stringType);
+
+    Method* echoFunc = customType->GetOrCreateMethod("Echo", echoSignature);
+    echoFunc->SetStackSize(1);
+    echoFunc->AddInstruction(std::make_unique<LoadStringInstruction>("echo"));
+    echoFunc->AddInstruction(std::make_unique<ReturnInstruction>());
 
     // Generate the file
     file.Generate(output);

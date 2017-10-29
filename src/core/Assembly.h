@@ -47,8 +47,7 @@ public:
 
     Module* GetOrCreateModuleReference(Name moduleName);
 
-    const_iterator begin() const { return externalModules.begin(); }
-    const_iterator end() const { return externalModules.begin(); }
+    Range<const_iterator> AllExternalModules() const { return { externalModules.begin(), externalModules.end() }; }
 
 private:
     std::unique_ptr<Module> currentModule;
