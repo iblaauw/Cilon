@@ -4,6 +4,7 @@
 #include "LoadStringInstruction.h"
 #include "CallInstruction.h"
 #include "ReturnInstruction.h"
+#include "LoadNullInstruction.h"
 
 int main()
 {
@@ -53,12 +54,20 @@ int main()
 
     // Echo function
     MethodSignature echoSignature { stringType };
-    funcSignature.AddParameter(stringType);
+    echoSignature.AddParameter(stringType);
 
     Method* echoFunc = customType->GetOrCreateMethod("Echo", echoSignature);
     echoFunc->SetStackSize(1);
     echoFunc->AddInstruction(std::make_unique<LoadStringInstruction>("echo"));
     echoFunc->AddInstruction(std::make_unique<ReturnInstruction>());
+
+    // Create Function
+    MethodSignature createSignature { customType };
+    Method* createFunc = customType->GetOrCreateMethod("Create", createSignature);
+    createFunc->SetIsStatic(true);
+    createFunc->SetStackSize(1);
+    createFunc->AddInstruction(std::make_unique<LoadNullInstruction>());
+    createFunc->AddInstruction(std::make_unique<ReturnInstruction>());
 
     // Generate the file
     file.Generate(output);
