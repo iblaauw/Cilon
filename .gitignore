@@ -1,3 +1,8 @@
 compiler
+tests
+
 build/
+ilsrc/
+
+*.exe
 *.swp
