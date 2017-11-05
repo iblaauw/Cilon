@@ -47,3 +47,14 @@ TEST_CASE("Divide", "[NumericInstructions]")
     REQUIRE(ss.str() == "div");
 }
 
+TEST_CASE("Negate", "[NumericInstructions]")
+{
+    std::stringstream ss;
+    Stream stream(ss);
+
+    NegateInstruction instr {};
+    instr.Generate(stream);
+
+    REQUIRE(ss.str() == "neg");
+}
+

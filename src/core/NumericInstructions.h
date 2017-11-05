@@ -37,3 +37,12 @@ public:
         stream << "div";
     }
 };
+
+class NegateInstruction : public Instruction
+{
+public:
+    void Generate(Stream& stream) const override
+    {
+        stream << "neg";
+    }
+};

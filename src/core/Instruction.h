@@ -6,3 +6,4 @@ class Instruction : public Generator
 {
 
 };
+
