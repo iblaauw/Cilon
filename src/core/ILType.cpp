@@ -56,3 +56,10 @@ Method* ILType::GetOrCreateMethod(Name methodName, const MethodSignature& signat
     return type;
 }
 
+/*static*/ ILType* ILType::GetBool()
+{
+    static ILType* type = new ILType("bool", (Module*)nullptr);
+    return type;
+}
+
+

@@ -28,6 +28,7 @@ public:
     static ILType* GetString();
     static ILType* GetInt();
     static ILType* GetObject();
+    static ILType* GetBool();
 
     const Name& GetName() const { return name; }
     Assembly* GetOwningAssembly() const { return owningAssembly; }
