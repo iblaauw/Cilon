@@ -35,6 +35,8 @@ public:
     ILType* GetOwningType() const { return owningType; }
     Module* GetOwningModule() const { return owningModule; }
 
+    void SetParamName(int index, const Identifier& name) { } // TODO: impl
+
     const MethodSignature& GetSignature() const { return signature; }
 
     void AddInstruction(std::unique_ptr<Instruction> instr);

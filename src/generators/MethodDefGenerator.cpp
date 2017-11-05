@@ -39,27 +39,7 @@ void MethodDefGenerator::Generate(Stream& out) const
 void MethodDefGenerator::GenerateParams(Stream& out, const MethodSignature& signature) const
 {
     // Generate parameters
-    out << "(";
-
-    bool first = true;
-    for (ILType* paramType : signature.AllParameters())
-    {
-        if (first)
-        {
-            first = false;
-        }
-        else
-        {
-            out << ", ";
-        }
-
-        TypeGenerator paramGen { paramType };
-        paramGen.Generate(out);
-    }
-
-    // TODO: named parameters
-
-    out << ")";
+    out << "(" << MethodDefParamsGenerator { method } << ")";
 }
 
 void MethodDefGenerator::GenerateMethodBody(Stream& out) const
@@ -79,6 +59,33 @@ void MethodDefGenerator::GenerateMethodBody(Stream& out) const
     {
         instr->Generate(out);
     }
+}
+
+MethodDefParamsGenerator::MethodDefParamsGenerator(const Method* method)
+    : method(method)
+{}
+
+void MethodDefParamsGenerator::Generate(Stream& out) const
+{
+    const auto& signature = method->GetSignature();
+
+    bool first = true;
+    for (ILType* paramType : signature.AllParameters())
+    {
+        if (first)
+        {
+            first = false;
+        }
+        else
+        {
+            out << ", ";
+        }
+
+        TypeGenerator paramGen { paramType };
+        paramGen.Generate(out);
+    }
+
+    // TODO: named parameters
 }
 
 

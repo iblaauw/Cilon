@@ -18,4 +18,14 @@ private:
     const Method* method;
 };
 
+class MethodDefParamsGenerator : public Generator
+{
+public:
+    MethodDefParamsGenerator(const Method* method);
+    void Generate(Stream& out) const override;
+
+private:
+    const Method* method;
+};
+
 
