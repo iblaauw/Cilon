@@ -30,7 +30,7 @@ def test(target):
 
     # Add the test sources in
     factory.AddDir("test/core")
-    #factory.AddDir("test/generators")
+    factory.AddDir("test/end2end")
     factory.Add("test/main.cpp")
     factory.AddTarget("tests")
 
