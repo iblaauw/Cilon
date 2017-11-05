@@ -18,8 +18,9 @@ def main():
 
 @factory.special_target("test")
 def test(target):
-    print("Ensuring the project builds normally...")
-    factory.Build(target)
+    if target != "clean":
+        print("Ensuring the project builds normally...")
+        factory.Build(target)
 
     factory.Reset()
 
@@ -42,7 +43,10 @@ def test(target):
 
     factory.builtin_rules.UseDefaultCppRules()
 
-    factory.Build("tests")
+    if target == "clean":
+        factory.Clean("tests")
+    else:
+        factory.Build("tests")
 
 if __name__ == "__main__":
     main()

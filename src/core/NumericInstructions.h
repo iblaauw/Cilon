@@ -1,48 +1,34 @@
 #pragma once
 
-#include "Instruction.h"
+#include "RawInstruction.h"
 
-class AddInstruction : public Instruction
+class AddInstruction : public RawInstruction
 {
 public:
-    void Generate(Stream& stream) const override
-    {
-        stream << "add";
-    }
+    AddInstruction() : RawInstruction("add") {}
 };
 
-class SubtractInstruction : public Instruction
+class SubtractInstruction : public RawInstruction
 {
 public:
-    void Generate(Stream& stream) const override
-    {
-        stream << "sub";
-    }
+    SubtractInstruction() : RawInstruction("sub") {}
 };
 
-class MultiplyInstruction : public Instruction
+class MultiplyInstruction : public RawInstruction
 {
 public:
-    void Generate(Stream& stream) const override
-    {
-        stream << "mul";
-    }
+    MultiplyInstruction() : RawInstruction("mul") {}
 };
 
-class DivideInstruction : public Instruction
+class DivideInstruction : public RawInstruction
 {
 public:
-    void Generate(Stream& stream) const override
-    {
-        stream << "div";
-    }
+    DivideInstruction() : RawInstruction("div") {}
 };
 
-class NegateInstruction : public Instruction
+class NegateInstruction : public RawInstruction
 {
 public:
-    void Generate(Stream& stream) const override
-    {
-        stream << "neg";
-    }
+    NegateInstruction() : RawInstruction("neg") {}
 };
+
