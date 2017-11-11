@@ -48,6 +48,7 @@ TEST_CASE_METHOD(MethodParamsTestHelper, "Basic Method Parameters", "[MethodPara
     REQUIRE(ss.str() == "int32, string");
 }
 
+// TODO: this belongs in a different test case
 TEST_CASE_METHOD(MethodParamsTestHelper, "Void method parameter", "[MethodParams][!throws][!mayfail]")
 {
     ILType* voidType = ILType::GetVoid();
@@ -73,19 +74,74 @@ TEST_CASE_METHOD(MethodParamsTestHelper, "Method Parameter Name: mixed", "[Metho
     ILType* intType = ILType::GetInt();
     ILType* stringType = ILType::GetString();
     Method* method = CreateMethod("MyMethod", intType, stringType, intType);
-    method->SetParamName(0, "hi");
-    method->SetParamName(2, "everyone");
 
-    MethodDefParamsGenerator generator { method };
-    generator.Generate(stream);
+    SECTION("Setting params")
+    {
+        method->SetParamName(0, "hi");
+        method->SetParamName(2, "everyone");
 
-    REQUIRE(ss.str() == "int32 hi, string, int everyone");
+        MethodDefParamsGenerator generator { method };
+        generator.Generate(stream);
+
+        REQUIRE(ss.str() == "int32 hi, string, int32 everyone");
+    }
+
+    SECTION("Unsetting params")
+    {
+        method->UnsetParamName(0);
+        method->SetParamName(1, "center");
+        method->UnsetParamName(2);
+
+        MethodDefParamsGenerator generator { method };
+        generator.Generate(stream);
+
+        REQUIRE(ss.str() == "int32, string center, int32");
+    }
 }
 
-TEST_CASE_METHOD(MethodParamsTestHelper, "Method Argument Name: invalid name", "[MethodParams][!throws]")
+TEST_CASE_METHOD(MethodParamsTestHelper, "Method Parameter Name: invalid name", "[MethodParams][!throws]")
 {
     ILType* intType = ILType::GetInt();
     Method* method = CreateMethod("MyMethod", intType);
     REQUIRE_THROWS(method->SetParamName(0, "hello.world"));
 }
+
+TEST_CASE_METHOD(MethodParamsTestHelper, "Method Parameter Name: invalid index", "[MethodParams][!throws]")
+{
+    ILType* intType = ILType::GetInt();
+    ILType* stringType = ILType::GetString();
+    Method* method = CreateMethod("MyMethod", intType, stringType, intType);
+
+    SECTION("Unset")
+    {
+        REQUIRE_THROWS(method->GetParamName(0));
+        REQUIRE_THROWS(method->GetParamName(1));
+        REQUIRE_THROWS(method->GetParamName(2));
+    }
+
+    method->SetParamName(0, "a");
+    method->SetParamName(2, "c");
+
+    SECTION("Unset 2")
+    {
+        REQUIRE_THROWS(method->GetParamName(1));
+    }
+
+    method->SetParamName(1, "b");
+
+    SECTION("Negative")
+    {
+        REQUIRE_THROWS(method->GetParamName(-1));
+        REQUIRE_THROWS(method->SetParamName(-2, "hi"));
+        REQUIRE_THROWS(method->UnsetParamName(-3));
+    }
+
+    SECTION("Over")
+    {
+        REQUIRE_THROWS(method->GetParamName(3));
+        REQUIRE_THROWS(method->SetParamName(4, "hi"));
+        REQUIRE_THROWS(method->UnsetParamName(5));
+    }
+}
+
 

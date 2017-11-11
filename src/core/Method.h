@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <map>
 
 #include "Name.h"
 #include "Instruction.h"
@@ -35,7 +36,10 @@ public:
     ILType* GetOwningType() const { return owningType; }
     Module* GetOwningModule() const { return owningModule; }
 
-    void SetParamName(int index, const Identifier& name) { } // TODO: impl
+    bool DoesParameterHaveName(int index) const;
+    Identifier GetParamName(int index) const;
+    void SetParamName(int index, const Identifier& name);
+    void UnsetParamName(int index);
 
     const MethodSignature& GetSignature() const { return signature; }
 
@@ -46,7 +50,10 @@ public:
     Range<instr_iter> AllInstructions() const { return { instructions.begin(), instructions.end() }; }
 
 private:
+    void ParameterNameIndexGuard(int index) const;
+
     std::vector<std::unique_ptr<Instruction>> instructions;
+    std::vector<std::unique_ptr<Identifier>> parameterNames; // These are pointers in order to allow them to be null (which means not set)
 
     Name name;
     MethodSignature signature;

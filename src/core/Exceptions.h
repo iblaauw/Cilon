@@ -39,5 +39,10 @@ public:
     NotImplementedException() : std::runtime_error("Not Implemented") {}
 };
 
+class IndexOutOfRangeException : std::runtime_error
+{
+public:
+    IndexOutOfRangeException(std::string message) : std::runtime_error(message) {}
+};
 
 

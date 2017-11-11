@@ -70,22 +70,24 @@ void MethodDefParamsGenerator::Generate(Stream& out) const
     const auto& signature = method->GetSignature();
 
     bool first = true;
+    int index = 0;
     for (ILType* paramType : signature.AllParameters())
     {
-        if (first)
-        {
-            first = false;
-        }
-        else
+        if (index != 0)
         {
             out << ", ";
         }
 
         TypeGenerator paramGen { paramType };
         paramGen.Generate(out);
-    }
 
-    // TODO: named parameters
+        if (method->DoesParameterHaveName(index))
+        {
+            out << " " << method->GetParamName(index);
+        }
+
+        index++;
+    }
 }
 
 
