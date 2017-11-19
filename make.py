@@ -31,6 +31,7 @@ def test(target):
     # Add the test sources in
     factory.AddDir("test/core")
     factory.AddDir("test/end2end")
+    factory.AddDir("test/utils")
     factory.Add("test/main.cpp")
     factory.AddTarget("tests")
 
@@ -39,6 +40,7 @@ def test(target):
     factory.builtin_rules.CXXFLAGS.append("-Isrc/core")
     factory.builtin_rules.CXXFLAGS.append("-Isrc/generators")
     factory.builtin_rules.CXXFLAGS.append("-Iexternal") # test include for Catch
+    factory.builtin_rules.CXXFLAGS.append("-Itest/utils")
     factory.builtin_rules.CXXFLAGS.append("-g")
 
     factory.builtin_rules.UseDefaultCppRules()
