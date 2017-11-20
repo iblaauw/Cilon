@@ -58,6 +58,7 @@ void MethodDefGenerator::GenerateMethodBody(Stream& out) const
     for (auto& instr : method->AllInstructions())
     {
         instr->Generate(out);
+        out << std::endl;
     }
 }
 

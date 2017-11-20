@@ -2,7 +2,7 @@
 
 void LoadNullInstruction::Generate(Stream& out) const
 {
-    out << "ldnull" << std::endl;
+    out << "ldnull";
 }
 
 

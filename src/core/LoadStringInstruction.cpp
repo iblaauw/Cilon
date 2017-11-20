@@ -6,6 +6,6 @@ LoadStringInstruction::LoadStringInstruction(std::string value)
 
 void LoadStringInstruction::Generate(Stream& out) const
 {
-    out << "ldstr " << '"' << value << '"' << std::endl;
+    out << "ldstr " << '"' << value << '"';
 }
 
