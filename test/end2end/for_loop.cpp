@@ -11,6 +11,7 @@
 #include "BranchCompareInstruction.h"
 #include "NumericInstructions.h"
 #include "BranchInstruction.h"
+#include "PopInstruction.h"
 
 static const char* correctOutput = 
 R"##(//*****************************//
@@ -36,6 +37,7 @@ R"##(//*****************************//
     add
     br loop_start
     loop_exit:
+    pop
     ret
 }
 
@@ -110,6 +112,7 @@ TEST_CASE("End-to-end for-loop test", "[end-to-end]")
 
     // Exit
     main->AddInstruction(std::move(exitLabel));
+    main->AddInstruction(std::make_unique<PopInstruction>());
     main->AddInstruction(std::make_unique<ReturnInstruction>());
 
     // Generate the file
