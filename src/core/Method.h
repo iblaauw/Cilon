@@ -6,6 +6,7 @@
 #include "Name.h"
 #include "Instruction.h"
 #include "MethodSignature.h"
+#include "LocalsCollection.h"
 
 class Module;
 
@@ -49,11 +50,16 @@ public:
 
     Range<instr_iter> AllInstructions() const { return { instructions.begin(), instructions.end() }; }
 
+    LocalsCollection& Locals() { return locals; }
+    const LocalsCollection& Locals() const { return locals; }
+
 private:
     void ParameterNameIndexGuard(int index) const;
 
     std::vector<std::unique_ptr<Instruction>> instructions;
     std::vector<std::unique_ptr<Identifier>> parameterNames; // These are pointers in order to allow them to be null (which means not set)
+
+    LocalsCollection locals;
 
     Name name;
     MethodSignature signature;

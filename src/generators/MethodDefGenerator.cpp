@@ -2,6 +2,7 @@
 
 #include "Method.h"
 #include "TypeGenerator.h"
+#include "LocalsGenerator.h"
 
 MethodDefGenerator::MethodDefGenerator(const Method* method)
     : method(method)
@@ -53,6 +54,13 @@ void MethodDefGenerator::GenerateMethodBody(Stream& out) const
     if (stackSize > 0)
     {
         out << ".maxstack " << stackSize << std::endl;
+    }
+
+    if (method->Locals().size() > 0)
+    {
+        LocalsGenerator locals(method->Locals());
+        locals.Generate(out);
+        out << std::endl;
     }
 
     for (auto& instr : method->AllInstructions())
