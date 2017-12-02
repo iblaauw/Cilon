@@ -45,6 +45,7 @@ public:
     const MethodSignature& GetSignature() const { return signature; }
 
     void AddInstruction(std::unique_ptr<Instruction> instr);
+    void InsertInstruction(int index, std::unique_ptr<Instruction> instr);
 
     using instr_iter = typename std::vector<std::unique_ptr<Instruction>>::const_iterator;
 

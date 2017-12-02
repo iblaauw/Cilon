@@ -2,8 +2,7 @@
 import factory
 
 def main():
-    factory.AddDir("src/core")
-    factory.AddDir("src/generators")
+    add_core_dirs()
     factory.Add("src/main.cpp")
     factory.AddTarget("compiler")
 
@@ -25,8 +24,7 @@ def test(target):
     factory.Reset()
 
     # Add main source files
-    factory.AddDir("src/core")
-    factory.AddDir("src/generators")
+    add_core_dirs()
 
     # Add the test sources in
     factory.AddDir("test/core")
@@ -49,6 +47,11 @@ def test(target):
         factory.Clean("tests")
     else:
         factory.Build("tests")
+
+def add_core_dirs():
+    factory.AddDir("src/core")
+    factory.AddDir("src/generators")
+    factory.AddDir("src/builders")
 
 if __name__ == "__main__":
     main()

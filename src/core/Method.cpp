@@ -86,6 +86,18 @@ void Method::AddInstruction(std::unique_ptr<Instruction> instr)
     instructions.emplace_back(std::move(instr));
 }
 
+void Method::InsertInstruction(int index, std::unique_ptr<Instruction> instr)
+{
+    if (IsExternal())
+        throw InvalidOperationException("Cannot set instructions for an externally defined method");
+
+    if (index < 0 || index >= instructions.size())
+        throw IndexOutOfRangeException("Index out of range");
+
+    auto iter = instructions.begin() + index;
+    instructions.emplace(iter, std::move(instr));
+}
+
 void Method::ParameterNameIndexGuard(int index) const
 {
     if (index < 0 || index >= parameterNames.size())
