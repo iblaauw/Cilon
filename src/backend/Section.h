@@ -8,7 +8,7 @@ class PEFile;
 class Section : public DataBlockBase
 {
 public:
-    Section(std::string name, uint32_t vAddress, int index, PEFile* owner);
+    Section(std::string name, uint32_t vAddress, int index, uint32_t sectionVirtualAlignment);
 
     enum class ContainsFlags
     {
@@ -31,11 +31,14 @@ public:
 
     int GetPaddedAligment() const override;
 
+    virtual void SetContext(const BlockContext* context) { this->context = context; }
+
 protected:
     void GenerateImpl(ByteStream& stream) const override;
+
+    const BlockContext* context;
 private:
     std::string name;
-    PEFile* owningFile;
     uint32_t virtualAddress;
     uint32_t virtualSize;
     uint32_t flags;

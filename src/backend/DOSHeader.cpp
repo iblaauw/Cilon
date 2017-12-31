@@ -31,5 +31,7 @@ void DOSHeader::GenerateImpl(ByteStream& stream)
     stream.WriteArray(DOS_STUB_1);
     stream.Write32(peBlock.GetAddress());
     stream.WriteArray(DOS_STUB_2);
+
+    stream.AssertBlockSize(128);
 }
 

@@ -1,7 +1,7 @@
 #include "Section.h"
 
-Section::Section(std::string name, uint32_t vAddress, uint32_t vSize, PEFile* owner)
-    : name(name), owningFile(owner), virtualAddress(vAddress), virtualSize(vSize)
+Section::Section(std::string name, uint32_t vAddress, uint32_t vSize, uint32_t sectionVirtualAlignment)
+    : name(name), virtualAddress(vAddress), virtualSize(vSize)
 {
     if (name.size() > 8)
         throw ArgumentException("Name is too long");
@@ -9,7 +9,7 @@ Section::Section(std::string name, uint32_t vAddress, uint32_t vSize, PEFile* ow
     if (name.empty())
         throw ArgumentException("Name is empty");
 
-    if ((virtualAddress % owner->GetSectionVirtualAlignment()) != 0)
+    if ((virtualAddress % sectionVirtualAlignment) != 0)
         throw ArgumentException("Virtual address is not correctly aligned");
 }
 
